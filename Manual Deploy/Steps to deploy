@@ -1,0 +1,49 @@
+1- Create account on AWS.
+2- Create EC2 instance on AWS and Launch it.
+3- Add HTTP $ SSH to instance’s security group.
+4- Connect to instance via SSH using the .pem key and server DNS.
+ssh -i &lt;path-to-key&gt;/MarioPlex.pem ubuntu@&lt;server-public-DNS&gt;
+5- Install tools and packages needed for project.
+Run devOps.bash(Non-interactive script)
+sudo bash install.sh #the file in the Dependencies Installation folder.
+it installs :
+- Node &amp; NPM
+- MongoDB
+- PM2
+- NginX
+- UFW
+6- Clone Back-End repository into /opt/back-end
+sudo git clone https://github.com/MohmedMonsef/Marioplex-Backend opt/back-end
+7- Build back-end
+cd opt/back-end
+sudo npm install
+NOTE:
+if that causes a problem ,turn yourself into a root first
+sudo su
+then continue …
+8- Start the back-end server using: pm2 start server.js
+9- Clone Front-End repository into /opt/front-end
+sudo git clone https://github.com/MohmedMonsef/Marioplex-Frontend
+opt/front-end
+10- Remove mock-server from main.js &amp; enter production mode
+sudo nano opt/front-end/src/main.js
+Remove these lines:
+-if (process.env.NODE_ENV === &quot;production&quot;) {
+mockServer();
+}
+-import { mockServer } from &quot;../mockServer/mock&quot;;
+and edit that line:
+-Vue.config.productionTip = true;
+and edit your baseURL ( “/” if all requests begin with /api and “/api/”)
+-axios.defaults.baseURL = &quot;/&quot;;
+11- Build front-end
+-cd opt/front-end
+- sudo npm install
+12- Build front-end for production
+- npm run build
+13- Edit Nginx configuration
+- cd /etc/nginx/sites-available
+- Replace file default with our NginX-confg
+14- Restart NginX
+- sudo systemctl restart nginx
+put your IP or DNS in URL , and Enjoy your Site!
