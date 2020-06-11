@@ -1,0 +1,30 @@
+sudo: required
+services:
+  - docker 
+
+script:
+  - true
+notifications:
+  email:
+    recipients:
+      - belalelhossany12@gmail.com
+      - mohmedmonsef70@gmail.com
+    on_success: never 
+    on_failure: always 
+after_success:
+  - docker build -t belalelhossany/frontend .
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push belalelhossany/frontend
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: multifront
+  env: Multifront-env
+  bucket_name: multifront
+  bucket_path: front
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
