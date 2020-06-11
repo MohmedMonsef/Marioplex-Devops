@@ -1,0 +1,16 @@
+FROM belalelhossany/start 
+
+WORKDIR '/app'
+
+COPY ./package.json /app/package.json
+
+WORKDIR /app
+RUN sudo npm install
+COPY . /app
+
+EXPOSE 3000
+
+WORKDIR /app
+ENTRYPOINT ["/bin/bash"]
+CMD ["testcommand.sh"]
+
